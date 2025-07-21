@@ -1,0 +1,103 @@
+1. TCP/IP and Socket Programming
+
+TCP/IP is the backbone of internet communication. Socket programming allows two computers (or programs)
+to talk to each other.
+Key Concepts:
+- socket(): create a socket
+- bind(): bind the socket to an IP and port
+- listen(): wait for incoming connections
+- accept(): accept a connection from a client
+- read()/write() or recv()/send(): communicate with clients
+Use in Redis: Handle multiple clients over TCP, each sending commands and receiving responses.
+
+2. Concurrency and Multithreading
+
+Concurrency allows your program to handle multiple tasks at once using threads.
+Key Concepts:
+- std::thread: start a new thread
+- Thread pools: reuse threads to save resources
+- Handling simultaneous client connections
+Use in Redis: Handling multiple clients concurrently or offloading expensive operations.
+
+3. Mutex and Synchronization
+
+When multiple threads access shared data, mutexes prevent data corruption.
+Key Concepts:
+- std::mutex, std::lock_guard
+- Race conditions and deadlocks
+- Condition variables for thread communication
+Use in Redis: Protect shared data when accessed by multiple threads.
+
+4. Data Structures -> Hash Tables, Vectors
+
+Redis supports many data types. You'll need basic C++ containers to implement them.
+Key Structures:
+- std::unordered_map: for key-value storage
+- std::vector: for lists or arrays
+- std::set, std::map: for ordered structures
+Use in Redis: Implement commands like SET, GET, LPUSH, SADD, etc.
+
+5. Parsing and RESP Protocol
+
+RESP (REdis Serialization Protocol) is how Redis communicates with clients.
+Key Concepts:
+- RESP types: Simple Strings, Errors, Integers, Bulk Strings, Arrays
+- Parse from a socket stream to commands
+- Handle malformed or partial input
+
+Use in Redis: Interpret user input like SET key value sent as:
+*3\r\n$3\r\nSET\r\n$3\r\nkey\r\n$5\r\nvalue\r\n
+
+6. File I/O and Persistence
+
+To make Redis durable, data should be saved and loaded from disk.
+Key Concepts:
+- std::ofstream / std::ifstream
+- Binary vs text formats
+- Snapshotting vs Append-Only File (AOF) strategies
+Use in Redis: Save the in-memory data on shutdown or at intervals.
+
+7. Signal Handling
+
+Signals are interrupts sent to a process (like Ctrl+C or SIGTERM).
+Key Concepts:
+- signal() or sigaction()
+- Catch SIGINT to gracefully shutdown
+- Flush or save data before exiting
+Use in Redis: Implement graceful shutdown and autosave.
+
+8. Command Processing and Response Formatting
+
+After parsing a command, you must execute it and return a RESP-formatted response.
+Key Concepts:
+- Dispatch pattern for handling commands
+- Return +OK\r\n, $6\r\nvalue\r\n, -ERR\r\n, etc.
+- Error handling for unknown or malformed commands
+Use in Redis: Every command (GET, SET, DEL, etc.) maps to a function and returns a formatted response.
+
+9. Singleton Pattern
+
+Ensures a class has only one instance (used often for shared resources).
+Key Concepts:
+- Static instance
+- Private constructor
+- Thread-safe initialization
+Use in Redis: You might use it for a central DataStore or CommandManager.
+
+10. Bitwise Operators '|='
+
+Bitwise operators manipulate bits directly.
+Examples:
+int flags = 0;
+flags |= 0x01; // set a flag
+flags &= ~0x01; // clear a flag
+Use in Redis: Useful for flags (e.g., command attributes or permission bits).
+
+11. std:: (Standard Library Namespace)
+
+The std:: namespace contains all standard C++ functionality.
+Examples:
+- std::string, std::vector, std::map
+- std::thread, std::mutex
+- std::cout, std::cin
+Use in Redis: You'll use many std:: components across parsing, threading, data structures, and I/O
